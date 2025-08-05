@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root BTCPP_format="4">
+  <BehaviorTree ID="traffic">
+    <Repeat num_cycles="3">
+      <Parallel failure_count="-1"
+                success_count="1">
+        <Sequence>
+          <TriggerLight state="GREEN"
+                        current_state="{current_state}"/>
+          <Sleep msec="5000"/>
+          <TriggerLight state="YELLOW"
+                        current_state="{current_state}"/>
+          <Sleep msec="2000"/>
+          <TriggerLight state="RED"
+                        current_state="{current_state}"/>
+          <Sleep msec="5000"/>
+        </Sequence>
+        <ReactiveSequence>
+          <PedestrianRequest/>
+          <ForceSuccess>
+            <Sequence>
+              <TriggerLight state="RED"
+                            current_state="{current_state}"/>
+              <Sleep msec="1000"/>
+            </Sequence>
+          </ForceSuccess>
+        </ReactiveSequence>
+      </Parallel>
+    </Repeat>
+  </BehaviorTree>
+
+  <!-- Description of Node Models (used by Groot) -->
+  <TreeNodesModel>
+    <Condition ID="PedestrianRequest"
+               editable="true"/>
+    <Action ID="TriggerLight"
+            editable="true">
+      <input_port name="state">desired color</input_port>
+      <inout_port name="current_state">current color</inout_port>
+    </Action>
+  </TreeNodesModel>
+
+</root>
